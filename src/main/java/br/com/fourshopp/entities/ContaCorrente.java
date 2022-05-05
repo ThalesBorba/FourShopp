@@ -19,6 +19,8 @@ public class ContaCorrente extends Conta{
         return TAXA;
     }
 
+    public ContaCorrente() {}
+
     public ContaCorrente(long id, Double saldo, String senha) {
         super(id, saldo, senha);
     }

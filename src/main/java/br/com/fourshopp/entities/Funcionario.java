@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +36,10 @@ public class Funcionario extends Pessoa implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Produto> listaProdutos;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "conta_corrente_id")
+    private ContaCorrente contaCorrente;
 
     public Funcionario() {}
 

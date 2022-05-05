@@ -49,4 +49,9 @@ public class Pessoa implements Serializable {
         this.cpf = cpf;
         this.endereco = endereco;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario: " + nome + " autenticado";
+    }
 }
