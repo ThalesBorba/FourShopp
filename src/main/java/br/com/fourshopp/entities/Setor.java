@@ -4,7 +4,7 @@ public enum Setor {
 
     MERCEARIA(1,"MERCEARIA"),
     BAZAR(2,"BAZAR"),
-    ;
+    ELETRONICOS(3,"ELETRONICOS");
 
 
     private int cd;

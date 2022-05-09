@@ -7,6 +7,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -38,7 +39,7 @@ public class ClienteService {
         return clienteRepository.save(found);
     }
 
-    public Cliente loadByEmailAndPassword(String cpf, String password){
+    public Optional<Cliente> loadByEmailAndPassword(String cpf, String password){
         return clienteRepository.findByCpfAndPassword(cpf,password);
     }
 }

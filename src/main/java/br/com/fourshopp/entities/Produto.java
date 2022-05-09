@@ -18,7 +18,7 @@ public class Produto implements Serializable {
 
     // PRODUTO FORA DA DATA DE VENCIMENTO NÃO PODE SER ADICIONADO NO CARRINHO
 
-    private static final long serialVersionUID = -642046748542200454L;
+    private static final long serialVersionUID = 54L;
 
     @Id
     @GeneratedValue(generator = "produto", strategy = GenerationType.IDENTITY)
@@ -34,8 +34,18 @@ public class Produto implements Serializable {
     @Column(name = "vl_preco")
     private double preco;
 
+    @Column(name = "ds_setor")
+    private int setor;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "dt_vencimento")
     private Date dataVencimento;
+
+    public Produto(String nome, int quantidade, double preco, Setor setor, Date dataVencimento) {
+        this.nome = nome;
+        this.quantidade = quantidade;
+        this.preco = preco;
+        this.setor = setor.getCd();
+        this.dataVencimento = dataVencimento;
+    }
 }

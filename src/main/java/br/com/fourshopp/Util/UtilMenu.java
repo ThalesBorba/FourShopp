@@ -10,10 +10,9 @@ import java.util.Scanner;
 
 public class UtilMenu {
 
-    static Scanner scanner =  new Scanner(System.in);
 
 
-    public static Cliente menuCadastroCliente(){
+    public static Cliente menuCadastroCliente(Scanner scanner){
 
         System.out.println("Insira seu nome: ");
         String nome = scanner.next();
@@ -52,4 +51,10 @@ public class UtilMenu {
 
     }
 
+    public static int menuSetor(Scanner scanner) {
+        System.out.println("Digite a opção desejada: " +
+                "\n1- MERCEARIA \n2- BAZAR \n3- ELETRÔNICOS");
+        int opcao = scanner.nextInt();
+        return opcao;
+    }
 }

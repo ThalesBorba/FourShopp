@@ -14,28 +14,32 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    private Produto create(Produto operador){
+    public Produto create(Produto operador){
         return produtoRepository.save(operador);
     }
 
-    private Produto findById(Long id){
+    public Produto findById(Long id){
         return produtoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
     }
 
-    private List<Produto> listAll(){
+    public List<Produto> listAll(){
         return produtoRepository.findAll();
     }
 
-    private void remove(Long id){
+    public void remove(Long id){
         produtoRepository.deleteById(id);
     }
 
-    private Produto update(Produto produto, Long id){
+    public Produto update(Produto produto, Long id){
         Produto found = findById(id);
         found.setDataVencimento(produto.getDataVencimento());
         found.setNome(produto.getNome());
         found.setQuantidade(produto.getQuantidade());
         found.setPreco(produto.getPreco());
         return produtoRepository.save(found);
+    }
+
+    public List<Produto> listaProdutosPorSetor(int setor){
+        return produtoRepository.findBySetor(setor);
     }
 }
