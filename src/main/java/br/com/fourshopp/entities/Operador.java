@@ -36,11 +36,10 @@ public class Operador  extends Pessoa {
     public Operador() {}
 
     public Operador(String nome, String email, String celular, String password, String cpf, Endereco endereco,
-                    Date dataContratacao, Cargo cargo, double salario, Funcionario funcionario) {
+                    Date dataContratacao, Cargo cargo, double salario) {
         super(nome, email, celular, password, cpf, endereco);
         this.dataContratacao = dataContratacao;
         this.cargo = cargo;
         this.salario = salario;
-        this.funcionario = funcionario;
     }
 }

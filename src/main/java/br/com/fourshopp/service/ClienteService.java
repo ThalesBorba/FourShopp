@@ -15,19 +15,20 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    private Cliente create(Cliente cliente) {
+
+    public Cliente create(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
-    private Cliente findById(Long id){
+    public Cliente findById(Long id){
         return clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
     }
 
-    private List<Cliente> listAll(){
+    public List<Cliente> listAll(){
         return clienteRepository.findAll();
     }
 
-    private void remove(Long id){
+    public void remove(Long id){
         clienteRepository.deleteById(id);
     }
 

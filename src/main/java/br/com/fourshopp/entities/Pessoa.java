@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Getter
 @Entity
 @SequenceGenerator(name = "pessoa", sequenceName = "sq_pessoa", allocationSize = 1)
+@Table(name = "tb_pessoa")
 public class Pessoa implements Serializable {
 
 

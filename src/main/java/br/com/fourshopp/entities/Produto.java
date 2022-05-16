@@ -14,7 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @SequenceGenerator(name = "produto", sequenceName = "sq_produto", allocationSize = 1)
-public class Produto implements Serializable {
+@Table(name = "tb_produto")
+public class Produto implements Serializable, Cloneable {
 
     // PRODUTO FORA DA DATA DE VENCIMENTO NÃO PODE SER ADICIONADO NO CARRINHO
 
@@ -47,5 +48,15 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.setor = setor.getCd();
         this.dataVencimento = dataVencimento;
+    }
+
+    @Override
+    public Produto clone() throws CloneNotSupportedException {
+        return (Produto) super.clone();
+    }
+
+    public void getCalculaValor(int quantidade, Produto produto){
+        produto.setQuantidade(quantidade);
+        produto.setPreco(getPreco()*quantidade);
     }
 }

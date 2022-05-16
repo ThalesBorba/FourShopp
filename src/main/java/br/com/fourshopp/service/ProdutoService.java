@@ -42,4 +42,9 @@ public class ProdutoService {
     public List<Produto> listaProdutosPorSetor(int setor){
         return produtoRepository.findBySetor(setor);
     }
+
+    public void diminuirEstoque(int quantidade, Produto produto){
+        produto.setQuantidade(produto.getQuantidade() - quantidade);
+        produtoRepository.save(produto);
+    }
 }
