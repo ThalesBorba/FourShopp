@@ -24,4 +24,26 @@ public class Validation {
         }
         return inputToverify;
     }
+
+    public static Double numberFormatValidation(Scanner scanner) {
+        while (true) {
+            String inputToverify = scanner.next();
+            try {
+                return Double.parseDouble(inputToverify);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um número!");
+            }
+            }
+    }
+
+    public static Long longNumberFormatValidation(Scanner scanner) {
+        while (true) {
+            String inputToverify = scanner.next();
+            try {
+                return Long.parseLong(inputToverify);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um número!");
+            }
+        }
+    }
 }

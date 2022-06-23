@@ -1,6 +1,7 @@
 package br.com.fourshopp;
 
 import br.com.fourshopp.Util.UtilMenu;
+import br.com.fourshopp.Util.Validation;
 import br.com.fourshopp.entities.*;
 import br.com.fourshopp.repository.ProdutoRepository;
 import br.com.fourshopp.service.ClienteService;
@@ -52,7 +53,7 @@ public class FourShoppApplication implements CommandLineRunner {
 
         System.out.println("====== BEM-VINDO AO FOURSHOPP ======");
         System.out.println("1- Sou cliente \n2- Área do ADM \n3- Seja um Cliente \n4- Login funcionário \n5- Encerrar ");
-        int opcao = scanner.nextInt();
+        int opcao = Validation.numberFormatValidation(scanner).intValue();
         menuInicial(opcao);
     }
 
@@ -62,6 +63,7 @@ public class FourShoppApplication implements CommandLineRunner {
             String cpf = scanner.next();
             System.out.println("Insira sua senha: ");
             String password = scanner.next();
+            //aceita senha errada
             this.cliente = clienteService.loadByEmailAndPassword(cpf, password).orElseThrow(() -> new ObjectNotFoundException(1L,"Cliente"));
             if(cliente == null){
                 System.err.println("Usuario não encontrado !");
@@ -80,10 +82,10 @@ public class FourShoppApplication implements CommandLineRunner {
                 });
 
                 System.out.println("Informe o número do produto desejado: ");
-                Long produto = scanner.nextLong();
+                Long produto = Validation.longNumberFormatValidation(scanner);
 
                 System.out.println("Escolha a quantidade");
-                int quantidade = scanner.nextInt();
+                int quantidade = Validation.numberFormatValidation(scanner).intValue();
 
                 // Atualiza estoque
                 Produto foundById = produtoService.findById(produto);
@@ -123,7 +125,7 @@ public class FourShoppApplication implements CommandLineRunner {
                 menuInicial(2);
             }else {
                 System.out.println("1- Cadastrar funcionários \n2- Cadastrar Operador");
-                int escolhaAdm = scanner.nextInt();
+                int escolhaAdm = Validation.numberFormatValidation(scanner).intValue();
                 if(escolhaAdm == 1){
                     cadastrarFuncionario(scanner);
                     System.out.println("Funcionário cadastrado com sucesso");
@@ -150,7 +152,7 @@ public class FourShoppApplication implements CommandLineRunner {
             System.out.println("Área do funcionário");
 
             System.out.println("1- Chefe  \n2- Operador ");
-            int escolhaCargo = scanner.nextInt();
+            int escolhaCargo = Validation.numberFormatValidation(scanner).intValue();
 
             System.out.println("Insira seu cpf: ");
             String cpf = scanner.next();

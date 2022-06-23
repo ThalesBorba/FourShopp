@@ -51,7 +51,7 @@ public class UtilMenu {
         String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
-        int numero = scanner.nextInt();
+        int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Insira sua data de nascimento (dd/MM/yyyy): ");
         String dataNascimento = Validation.regexValidation(scanner, ValidationEnum.DATE);
@@ -69,7 +69,7 @@ public class UtilMenu {
     public static int menuSetor(Scanner scanner) {
         System.out.println("Digite a opção desejada: " +
                 "\n1- MERCEARIA \n2- BAZAR \n3- ELETRÔNICOS");
-        int opcao = scanner.nextInt();
+        int opcao = Validation.numberFormatValidation(scanner).intValue();
         return opcao;
     }
 
@@ -161,13 +161,13 @@ public class UtilMenu {
         String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
-        int numero = scanner.nextInt();
+        int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Data de contratação: ");
         String hireDate = scanner.next();
 
         System.out.println("Insira o salário CLT bruto: ");
-        double salario = scanner.nextDouble();
+        double salario = Validation.numberFormatValidation(scanner);
 
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -207,7 +207,7 @@ public class UtilMenu {
         String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
-        int numero = scanner.nextInt();
+        int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Data de contratação: ");
         String hireDate = scanner.next();
@@ -216,7 +216,7 @@ public class UtilMenu {
         Date data = formato.parse(hireDate);
 
         System.out.println("Insira o salário CLT bruto: ");
-        double salario = scanner.nextDouble();
+        double salario = Validation.numberFormatValidation(scanner);
 
         return new Operador(nome,email,celular,password,cpf,new Endereco(), data,Cargo.OPERADOR, salario);
     }

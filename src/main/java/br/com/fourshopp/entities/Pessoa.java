@@ -33,7 +33,7 @@ public class Pessoa implements Serializable {
     @Column(name = "ds_senha")
     private String password;
 
-    @Column(name = "nr_cpf")
+    @Column(name = "nr_cpf", unique = true)
     private String cpf;
 
     @OneToOne(cascade = {CascadeType.ALL})
