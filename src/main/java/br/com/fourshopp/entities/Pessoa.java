@@ -36,7 +36,7 @@ public class Pessoa implements Serializable {
     @Column(name = "nr_cpf")
     private String cpf;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "cd_endereco")
     private Endereco endereco;
 

@@ -23,7 +23,7 @@ public class UtilMenu {
     private static Scanner scanner;
 
     // SOU CLIENTE
-    public static Cliente menuCadastroCliente(Scanner scanner){
+    public static Cliente menuCadastroCliente(Scanner scanner) throws ParseException {
 
         System.out.println("Insira seu nome: ");
         String nome = scanner.next();
@@ -35,7 +35,7 @@ public class UtilMenu {
         String celular = Validation.regexValidation(scanner, ValidationEnum.CELLPHONE);
 
         System.out.println("Insira sua password: ");
-        String password = scanner.next();
+        String password = Validation.regexValidation(scanner, ValidationEnum.PASSWORD);
 
         System.out.println("Insira seu cpf: ");
         String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
@@ -44,6 +44,7 @@ public class UtilMenu {
         String rua = scanner.next();
 
         System.out.println("Insira seu cidade: ");
+        scanner.nextLine();
         String cidade = scanner.next();
 
         System.out.println("Insira seu bairro: ");
@@ -53,10 +54,12 @@ public class UtilMenu {
         int numero = scanner.nextInt();
 
         System.out.println("Insira sua data de nascimento (dd/MM/yyyy): ");
-        String dataNascimento = scanner.next();
+        String dataNascimento = Validation.regexValidation(scanner, ValidationEnum.DATE);
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataFormatada = formato.parse(dataNascimento);
 
         Endereco endereco = new Endereco(rua, cidade, bairro, numero);
-        Cliente cliente = new Cliente(nome, email, celular, password, cpf, endereco, new Date());
+        Cliente cliente = new Cliente(nome, email, celular, password, cpf, endereco, dataFormatada);
 
         return cliente;
 
