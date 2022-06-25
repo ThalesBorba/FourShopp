@@ -1,10 +1,12 @@
 package br.com.fourshopp.Util;
 
 import br.com.fourshopp.entities.*;
+import br.com.fourshopp.repository.PessoaRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
 import java.io.File;
@@ -18,15 +20,18 @@ import java.util.List;
 
 public class UtilMenu {
 
+    @Autowired
+    private PessoaRepository pessoaRepository;
     private static double valorTotalCompra;
 
     private static Scanner scanner;
 
     // SOU CLIENTE
-    public static Cliente menuCadastroCliente(Scanner scanner) throws ParseException {
+    public static Cliente menuCadastroCliente(Scanner scanner, PessoaRepository pessoaRepository) throws ParseException {
 
         System.out.println("Insira seu nome: ");
-        String nome = scanner.next();
+        scanner.nextLine();
+        String nome = scanner.nextLine();
 
         System.out.println("Insira seu email: ");
         String email = Validation.regexValidation(scanner, ValidationEnum.EMAIL);
@@ -38,7 +43,7 @@ public class UtilMenu {
         String password = Validation.regexValidation(scanner, ValidationEnum.PASSWORD);
 
         System.out.println("Insira seu cpf: ");
-        String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
+        String cpf = Validation.regexValidation(scanner, pessoaRepository, ValidationEnum.CPF);
 
         System.out.println("Insira sua rua: ");
         String rua = scanner.next();
@@ -48,9 +53,11 @@ public class UtilMenu {
         String cidade = scanner.next();
 
         System.out.println("Insira seu bairro: ");
+        scanner.nextLine();
         String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
+        scanner.nextLine();
         int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Insira sua data de nascimento (dd/MM/yyyy): ");
@@ -140,16 +147,16 @@ public class UtilMenu {
         String nome = scanner.next();
 
         System.out.println("Insira seu email: ");
-        String email = scanner.next();
+        String email = Validation.regexValidation(scanner, ValidationEnum.EMAIL);
 
         System.out.println("Insira seu celular: ");
-        String celular = scanner.next();
+        String celular = Validation.regexValidation(scanner, ValidationEnum.CELLPHONE);
 
         System.out.println("Insira sua password: ");
         String password = scanner.next();
 
         System.out.println("Insira seu cpf: ");
-        String cpf = scanner.next();
+        String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
 
         System.out.println("Insira sua rua: ");
         String rua = scanner.next();
@@ -164,10 +171,11 @@ public class UtilMenu {
         int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Data de contratação: ");
-        String hireDate = scanner.next();
+        String hireDate = Validation.regexValidation(scanner, ValidationEnum.DATE);
 
         System.out.println("Insira o salário CLT bruto: ");
         double salario = Validation.numberFormatValidation(scanner);
+
 
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -186,16 +194,16 @@ public class UtilMenu {
         String nome = scanner.next();
 
         System.out.println("Insira seu email: ");
-        String email = scanner.next();
+        String email = Validation.regexValidation(scanner, ValidationEnum.EMAIL);
 
         System.out.println("Insira seu celular: ");
-        String celular = scanner.next();
+        String celular = Validation.regexValidation(scanner, ValidationEnum.CELLPHONE);
 
         System.out.println("Insira sua password: ");
         String password = scanner.next();
 
         System.out.println("Insira seu cpf: ");
-        String cpf = scanner.next();
+        String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
 
         System.out.println("Insira sua rua: ");
         String rua = scanner.next();
@@ -210,7 +218,7 @@ public class UtilMenu {
         int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Data de contratação: ");
-        String hireDate = scanner.next();
+        String hireDate = Validation.regexValidation(scanner, ValidationEnum.DATE);
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         Date data = formato.parse(hireDate);

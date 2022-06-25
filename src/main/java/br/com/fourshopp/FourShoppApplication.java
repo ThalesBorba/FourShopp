@@ -2,7 +2,9 @@ package br.com.fourshopp;
 
 import br.com.fourshopp.Util.UtilMenu;
 import br.com.fourshopp.Util.Validation;
+import br.com.fourshopp.Util.ValidationEnum;
 import br.com.fourshopp.entities.*;
+import br.com.fourshopp.repository.PessoaRepository;
 import br.com.fourshopp.repository.ProdutoRepository;
 import br.com.fourshopp.service.ClienteService;
 import br.com.fourshopp.service.FuncionarioService;
@@ -13,10 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.io.*;
+
+import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.fourshopp.Util.UtilMenu.*;
@@ -41,6 +44,9 @@ public class FourShoppApplication implements CommandLineRunner {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @Autowired
+    private PessoaRepository pessoaRepository;
+
 
     private Cliente cliente;
 
@@ -51,6 +57,13 @@ public class FourShoppApplication implements CommandLineRunner {
     @Override
     public void run(String[] args) throws Exception {
 
+        /*Funcionario administrador = new Funcionario("Thales Borba", "thales@fourshopp.com", "2199887766",
+                "Abc123**", "111.111.111-33", new Endereco("a", "b", "c", 1),
+                new SimpleDateFormat("dd/MM/yyyy").parse("22/06/2022"), Cargo.ADMINISTRADOR, null,
+                50000.00, new ArrayList<>(), new ArrayList<>());
+
+        pessoaRepository.save(administrador);*/
+
         System.out.println("====== BEM-VINDO AO FOURSHOPP ======");
         System.out.println("1- Sou cliente \n2- Área do ADM \n3- Seja um Cliente \n4- Login funcionário \n5- Encerrar ");
         int opcao = Validation.numberFormatValidation(scanner).intValue();
@@ -59,15 +72,18 @@ public class FourShoppApplication implements CommandLineRunner {
 
     public void menuInicial(int opcao) throws CloneNotSupportedException, IOException, ParseException {
         if(opcao == 1){
-            System.out.println("Insira seu cpf: ");
-            String cpf = scanner.next();
-            System.out.println("Insira sua senha: ");
-            String password = scanner.next();
-            //aceita senha errada
-            this.cliente = clienteService.loadByEmailAndPassword(cpf, password).orElseThrow(() -> new ObjectNotFoundException(1L,"Cliente"));
-            if(cliente == null){
-                System.err.println("Usuario não encontrado !");
-                menuInicial(4);
+            while(true) {
+                try{
+                    System.out.println("Insira seu cpf: ");
+                    String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
+                    System.out.println("Insira sua senha: ");
+                    String password = scanner.next();
+                    this.cliente = clienteService.loadByEmailAndPassword(cpf, password).orElseThrow(() -> new
+                            ObjectNotFoundException(1L,"Cliente"));
+                    break;
+                } catch (ObjectNotFoundException e) {
+                    System.err.println("Usuario não encontrado !");
+                }
             }
 
             int contador = 1;
@@ -107,42 +123,46 @@ public class FourShoppApplication implements CommandLineRunner {
             }
         }
 
-        if(opcao == 2){
+        if(opcao == 2) {
             System.out.println("INTRANET FOURSHOPP....");
 
             System.out.println("Insira as credenciais do usuário administrador: ");
 
             System.out.println("Insira seu cpf: ");
-            String cpf = scanner.next();
+            String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
 
             System.out.println("Insira sua password: ");
             String password = scanner.next();
-
             Optional<Funcionario> admnistrador = this.funcionarioService.loadByEmailAndPassword(cpf, password);
 
-            if(admnistrador.get().getCargo() != Cargo.ADMINISTRADOR){
-                System.out.println("Administrador nao encontrado");
-                menuInicial(2);
-            }else {
+
+
+            try {
+                if(admnistrador.get().getCargo() != Cargo.ADMINISTRADOR) {
+                    throw new NoSuchElementException();
+                }
                 System.out.println("1- Cadastrar funcionários \n2- Cadastrar Operador");
                 int escolhaAdm = Validation.numberFormatValidation(scanner).intValue();
-                if(escolhaAdm == 1){
+                if (escolhaAdm == 1) {
                     cadastrarFuncionario(scanner);
                     System.out.println("Funcionário cadastrado com sucesso");
-                }else if (escolhaAdm == 2){
+                } else if (escolhaAdm == 2) {
                     UtilMenu.menuCadastrarOperador(scanner);
                     System.out.println("Operador cadastrado com sucesso");
 
 
-                }else
+                } else
                     System.out.println("Opção inválida");
 
+            } catch (NoSuchElementException e) {
+                System.err.println("Administrador nao encontrado");
+                menuInicial(2);
             }
 
-        }
 
+        }
         if(opcao == 3) {
-            Cliente cliente = menuCadastroCliente(scanner);
+            Cliente cliente = menuCadastroCliente(scanner, pessoaRepository);
             this.clienteService.create(cliente);
             System.out.println("Bem-vindo, " + cliente.getNome());
             menuInicial(1);
@@ -155,7 +175,7 @@ public class FourShoppApplication implements CommandLineRunner {
             int escolhaCargo = Validation.numberFormatValidation(scanner).intValue();
 
             System.out.println("Insira seu cpf: ");
-            String cpf = scanner.next();
+            String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
 
             System.out.println("Insira sua password: ");
             String password = scanner.next();

@@ -45,6 +45,7 @@ public class ProdutoService {
 
     public void diminuirEstoque(int quantidade, Produto produto){
         produto.setQuantidade(produto.getQuantidade() - quantidade);
+        //todo se quantidade for menor que zero quebraa
         produtoRepository.save(produto);
     }
 }

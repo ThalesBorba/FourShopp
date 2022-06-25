@@ -13,4 +13,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     @Query("Select c From Pessoa c where c.cpf = ?1 and c.password = ?2")
     Optional<?> findByCpfAndPassword(@Param("cpf") String cpf, @Param("password") String password);
+
+    Pessoa findByCpf(String cpf);
 }
