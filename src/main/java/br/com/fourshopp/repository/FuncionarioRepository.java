@@ -12,4 +12,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 
     @Query("Select c From Pessoa c where c.cpf = ?1 and c.password = ?2")
     Optional<Funcionario> findByCpfAndPassword(@Param("cpf") String cpf, @Param("password") String password);
+
+    Funcionario findByCpf(String cpf);
 }

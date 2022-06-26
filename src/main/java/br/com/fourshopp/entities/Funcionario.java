@@ -31,7 +31,7 @@ public class Funcionario extends Pessoa implements Serializable {
     @Column(name = "vl_salario")
     private double salario;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Operador> operadores;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

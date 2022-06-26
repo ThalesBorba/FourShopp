@@ -162,17 +162,18 @@ public class UtilMenu {
 
         System.out.println("Insira sua rua: ");
         scanner.nextLine();
-        String rua = scanner.nextLine();
+        String rua = scanner.next();
 
-        System.out.println("Insira seu cidade: ");
+        System.out.println("Insira sua cidade: ");
         scanner.nextLine();
         String cidade = scanner.next();
 
         System.out.println("Insira seu bairro: ");
         scanner.nextLine();
-        String bairro = scanner.nextLine();
+        String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
+        scanner.nextLine();
         int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Data de contratação: ");
@@ -236,12 +237,21 @@ public class UtilMenu {
         System.out.println("Insira o salário CLT bruto: ");
         double salario = Validation.numberFormatValidation(scanner);
 
-        return new Operador(nome,email,celular,password,cpf,new Endereco(), data,Cargo.OPERADOR, salario);
+        System.out.println("Insira a carga horária mensal: ");
+        Integer cargaHoraria = Validation.numberFormatValidation(scanner).intValue();
+
+        return new Operador(nome,email,celular,password,cpf,new Endereco(), data,Cargo.OPERADOR, salario, cargaHoraria);
     }
 
     public static String menuDemitirOperador(Scanner scanner, OperadorRespository operadorRespository) {
-        System.out.println("Digite o cpf do operador a ser demitido");
-        String cpf = Validation.validationCpfToFire(scanner, operadorRespository, ValidationEnum.CPF);
+        String opcao = "N";
+        String cpf = null;
+        while (!opcao.equalsIgnoreCase("S")) {
+            System.out.println("Digite o cpf do operador a ser demitido");
+            cpf = Validation.validationCpfToFire(scanner, operadorRespository, ValidationEnum.CPF);
+            System.out.println("Tem certeza? [S/N]");
+            opcao = scanner.next();
+        }
 
         return cpf;
 

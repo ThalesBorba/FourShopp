@@ -33,13 +33,20 @@ public class Operador  extends Pessoa {
     @JoinColumn(name = "cd_pessoa")
     private Funcionario funcionario;
 
+    @Column(name = "ns_cargaHoraria")
+    private Integer cargaHoraria;
+
+    @Column(name = "ns_departamento")
+    private Setor setor;
+
     public Operador() {}
 
     public Operador(String nome, String email, String celular, String password, String cpf, Endereco endereco,
-                    Date dataContratacao, Cargo cargo, double salario) {
+                    Date dataContratacao, Cargo cargo, double salario, Integer cargaHoraria) {
         super(nome, email, celular, password, cpf, endereco);
         this.dataContratacao = dataContratacao;
         this.cargo = cargo;
         this.salario = salario;
+        this.cargaHoraria = cargaHoraria;
     }
 }

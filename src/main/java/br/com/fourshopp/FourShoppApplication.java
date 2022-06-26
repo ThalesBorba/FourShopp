@@ -62,7 +62,7 @@ public class FourShoppApplication implements CommandLineRunner {
     @Override
     public void run(String[] args) throws Exception {
 
-        /* Mocked Admin
+/*
 
         Funcionario administrador = new Funcionario("Thales Borba", "thales@fourshopp.com", "2199887766",
                 "Abc123**", "111.111.111-33", new Endereco("a", "b", "c", 1),
@@ -206,7 +206,9 @@ public class FourShoppApplication implements CommandLineRunner {
                         menuInicial(4);
                     } else if (opcaoDoChefe == 2) {
                         Operador operador = UtilMenu.menuCadastrarOperador(scanner, pessoaRepository);
+                        operador.setSetor(funcionario.getSetor());
                         this.operadorService.create(operador);
+                        this.funcionarioService.update(operador, funcionario.getCpf());
                         System.out.println("Operador cadastrado com sucesso");
                     } else {
                         System.out.println("Opção inválida!");

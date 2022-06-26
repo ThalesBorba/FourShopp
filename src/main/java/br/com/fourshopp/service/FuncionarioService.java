@@ -2,6 +2,7 @@ package br.com.fourshopp.service;
 
 import br.com.fourshopp.entities.Cliente;
 import br.com.fourshopp.entities.Funcionario;
+import br.com.fourshopp.entities.Operador;
 import br.com.fourshopp.repository.FuncionarioRepository;
 import br.com.fourshopp.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,9 @@ public class FuncionarioService {
         funcionarioRepository.deleteById(id);
     }
 
-    public Funcionario update(Funcionario operador, Long id){
-        Funcionario found = findById(id);
-        found.setCargo(operador.getCargo());
-        found.setSalario(operador.getSalario());
-        found.setCelular(operador.getCelular());
-        found.setEmail(operador.getEmail());
-        found.setPassword(operador.getPassword());
+    public Funcionario update(Operador operador, String cpf){
+        Funcionario found = funcionarioRepository.findByCpf(cpf);
+        found.getOperadores().add(operador);
         return funcionarioRepository.save(found);
     }
 
