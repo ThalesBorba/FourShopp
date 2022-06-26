@@ -4,6 +4,7 @@ import br.com.fourshopp.Util.UtilMenu;
 import br.com.fourshopp.Util.Validation;
 import br.com.fourshopp.Util.ValidationEnum;
 import br.com.fourshopp.entities.*;
+import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
 import br.com.fourshopp.repository.ProdutoRepository;
 import br.com.fourshopp.service.ClienteService;
@@ -46,6 +47,9 @@ public class FourShoppApplication implements CommandLineRunner {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private OperadorRespository operadorRespository;
 
 
     private Cliente cliente;
@@ -141,15 +145,20 @@ public class FourShoppApplication implements CommandLineRunner {
                 if(admnistrador.get().getCargo() != Cargo.ADMINISTRADOR) {
                     throw new NoSuchElementException();
                 }
-                System.out.println("1- Cadastrar funcionários \n2- Cadastrar Operador");
+                System.out.println("1- Cadastrar funcionários \n2- Cadastrar Operador \n3- Demitir Operador");
                 int escolhaAdm = Validation.numberFormatValidation(scanner).intValue();
                 if (escolhaAdm == 1) {
-                    cadastrarFuncionario(scanner);
+                    Funcionario funcionario = cadastrarFuncionario(scanner, pessoaRepository);
+                    this.funcionarioService.create(funcionario);
                     System.out.println("Funcionário cadastrado com sucesso");
                 } else if (escolhaAdm == 2) {
-                    UtilMenu.menuCadastrarOperador(scanner);
+                    Operador operador = UtilMenu.menuCadastrarOperador(scanner, pessoaRepository);
+                    this.operadorService.create(operador);
                     System.out.println("Operador cadastrado com sucesso");
+                } else if (escolhaAdm == 3) {
+                    UtilMenu.menuDemitirOperador(scanner, operadorRespository);
 
+                    System.out.println("Operador demitido com sucesso");
 
                 } else
                     System.out.println("Opção inválida");

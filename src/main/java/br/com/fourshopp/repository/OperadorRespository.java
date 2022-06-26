@@ -12,4 +12,7 @@ public interface OperadorRespository extends JpaRepository<Operador, Long> {
 
     @Query("Select c From Pessoa c where c.cpf = ?1 and c.password = ?2")
     Optional<Operador> findByCpfAndPassword(@Param("cpf") String cpf, @Param("password") String password);
+
+    Operador findByCpf(String cpf);
+    void deleteByCpf(String cpf);
 }

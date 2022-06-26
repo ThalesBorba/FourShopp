@@ -1,6 +1,7 @@
 package br.com.fourshopp.Util;
 
 import br.com.fourshopp.entities.*;
+import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
@@ -43,7 +44,7 @@ public class UtilMenu {
         String password = Validation.regexValidation(scanner, ValidationEnum.PASSWORD);
 
         System.out.println("Insira seu cpf: ");
-        String cpf = Validation.regexValidation(scanner, pessoaRepository, ValidationEnum.CPF);
+        String cpf = Validation.regexValidationCpf(scanner, pessoaRepository, ValidationEnum.CPF);
 
         System.out.println("Insira sua rua: ");
         String rua = scanner.next();
@@ -141,10 +142,11 @@ public class UtilMenu {
         document.close();
     }
 
-    public static Funcionario cadastrarFuncionario(Scanner scanner) throws ParseException {
+    public static Funcionario cadastrarFuncionario(Scanner scanner, PessoaRepository pessoaRepository) throws ParseException {
 
-        System.out.println("Insxira seu nome: ");
-        String nome = scanner.next();
+        System.out.println("Insira seu nome: ");
+        scanner.nextLine();
+        String nome = scanner.nextLine();
 
         System.out.println("Insira seu email: ");
         String email = Validation.regexValidation(scanner, ValidationEnum.EMAIL);
@@ -153,19 +155,22 @@ public class UtilMenu {
         String celular = Validation.regexValidation(scanner, ValidationEnum.CELLPHONE);
 
         System.out.println("Insira sua password: ");
-        String password = scanner.next();
+        String password = Validation.regexValidation(scanner, ValidationEnum.PASSWORD);
 
         System.out.println("Insira seu cpf: ");
-        String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
+        String cpf = Validation.regexValidationCpf(scanner, pessoaRepository, ValidationEnum.CPF);
 
         System.out.println("Insira sua rua: ");
-        String rua = scanner.next();
+        scanner.nextLine();
+        String rua = scanner.nextLine();
 
         System.out.println("Insira seu cidade: ");
+        scanner.nextLine();
         String cidade = scanner.next();
 
         System.out.println("Insira seu bairro: ");
-        String bairro = scanner.next();
+        scanner.nextLine();
+        String bairro = scanner.nextLine();
 
         System.out.println("Insira seu numero: ");
         int numero = Validation.numberFormatValidation(scanner).intValue();
@@ -188,10 +193,11 @@ public class UtilMenu {
 
     }
 
-    public static Operador menuCadastrarOperador(Scanner scanner) throws ParseException {
+    public static Operador menuCadastrarOperador(Scanner scanner, PessoaRepository pessoaRepository) throws ParseException {
 
         System.out.println("Insxira seu nome: ");
-        String nome = scanner.next();
+        scanner.nextLine();
+        String nome = scanner.nextLine();
 
         System.out.println("Insira seu email: ");
         String email = Validation.regexValidation(scanner, ValidationEnum.EMAIL);
@@ -200,18 +206,21 @@ public class UtilMenu {
         String celular = Validation.regexValidation(scanner, ValidationEnum.CELLPHONE);
 
         System.out.println("Insira sua password: ");
-        String password = scanner.next();
+        String password = Validation.regexValidation(scanner, ValidationEnum.PASSWORD);
 
         System.out.println("Insira seu cpf: ");
-        String cpf = Validation.regexValidation(scanner, ValidationEnum.CPF);
+        String cpf = Validation.regexValidationCpf(scanner, pessoaRepository, ValidationEnum.CPF);
 
         System.out.println("Insira sua rua: ");
+        scanner.nextLine();
         String rua = scanner.next();
 
         System.out.println("Insira seu cidade: ");
+        scanner.nextLine();
         String cidade = scanner.next();
 
         System.out.println("Insira seu bairro: ");
+        scanner.nextLine();
         String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
@@ -227,5 +236,13 @@ public class UtilMenu {
         double salario = Validation.numberFormatValidation(scanner);
 
         return new Operador(nome,email,celular,password,cpf,new Endereco(), data,Cargo.OPERADOR, salario);
+    }
+
+    public static String menuDemitirOperador(Scanner scanner, OperadorRespository operadorRespository) {
+        System.out.println("Digite o cpf do operador a ser demitido");
+        String cpf = Validation.validationCpfToFire(scanner, operadorRespository, ValidationEnum.CPF);
+
+        return cpf;
+
     }
 }
