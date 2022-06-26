@@ -204,8 +204,9 @@ public class FourShoppApplication implements CommandLineRunner {
                     System.out.println("1- Cadastrar produto  \n2- Cadastrar operadores");
                     int opcaoDoChefe = Validation.numberFormatValidation(scanner).intValue();
                     if (opcaoDoChefe == 1) {
-                        //todo
-                        menuInicial(4);
+                        Produto produto = UtilMenu.menuCadastrarProduto(scanner);
+                        this.produtoRepository.save(produto);
+                        System.out.println("Produto salvo");
                     } else if (opcaoDoChefe == 2) {
                         Operador operador = UtilMenu.menuCadastrarOperador(scanner, pessoaRepository);
                         operador.setSetor(funcionario.getSetor());

@@ -116,7 +116,8 @@ public class UtilMenu {
         produtos.forEach(produto -> {
 
             System.out.println(produto.toString());
-            Chunk nome = new Chunk("\n" + produto.getNome()+" ("+produto.getQuantidade()+") \nPreço unidade : R$"+df.format(produto.getPreco() / produto.getQuantidade()));
+            Chunk nome = new Chunk("\n" + produto.getNome()+" ("+produto.getQuantidade()+") \nPreço unidade : R$"
+                    +df.format(produto.getPreco() / produto.getQuantidade()));
             Phrase frase = new Phrase();
             frase.add(nome);
 
@@ -255,5 +256,27 @@ public class UtilMenu {
 
         return cpf;
 
+    }
+
+    public static Produto menuCadastrarProduto(Scanner scanner) throws ParseException {
+        System.out.println("Insira seu nome: ");
+        scanner.nextLine();
+        String nome = scanner.nextLine();
+
+        System.out.println("Insira a quantidade: ");
+        scanner.nextLine();
+        Integer quantidade = Validation.numberFormatValidation(scanner).intValue();
+
+        System.out.println("Insira o preco: ");
+        Double preco = Validation.numberFormatValidation(scanner);
+
+        //todo setor
+        System.out.println("Escolha o setor: \n1 - MERCEARIA\n2 - BAZAR\n3 - ELETRONICOS");
+        Setor setor = Validation.convertDepartment(scanner);
+
+        System.out.println("Insira a data de vencimento: ");
+        Date dataVencimento = Validation.assertExpiringDateIsValid(scanner);
+
+        return new Produto(nome, quantidade, preco, setor, dataVencimento);
     }
 }
