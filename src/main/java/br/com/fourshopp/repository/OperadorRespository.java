@@ -5,6 +5,7 @@ import br.com.fourshopp.entities.Operador;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -14,5 +15,6 @@ public interface OperadorRespository extends JpaRepository<Operador, Long> {
     Optional<Operador> findByCpfAndPassword(@Param("cpf") String cpf, @Param("password") String password);
 
     Operador findByCpf(String cpf);
+    @Transactional
     void deleteByCpf(String cpf);
 }

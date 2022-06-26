@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -61,12 +62,16 @@ public class FourShoppApplication implements CommandLineRunner {
     @Override
     public void run(String[] args) throws Exception {
 
-        /*Funcionario administrador = new Funcionario("Thales Borba", "thales@fourshopp.com", "2199887766",
+        /* Mocked Admin
+
+        Funcionario administrador = new Funcionario("Thales Borba", "thales@fourshopp.com", "2199887766",
                 "Abc123**", "111.111.111-33", new Endereco("a", "b", "c", 1),
                 new SimpleDateFormat("dd/MM/yyyy").parse("22/06/2022"), Cargo.ADMINISTRADOR, null,
                 50000.00, new ArrayList<>(), new ArrayList<>());
 
-        pessoaRepository.save(administrador);*/
+        pessoaRepository.save(administrador);
+
+        */
 
         System.out.println("====== BEM-VINDO AO FOURSHOPP ======");
         System.out.println("1- Sou cliente \n2- Área do ADM \n3- Seja um Cliente \n4- Login funcionário \n5- Encerrar ");
@@ -156,10 +161,8 @@ public class FourShoppApplication implements CommandLineRunner {
                     this.operadorService.create(operador);
                     System.out.println("Operador cadastrado com sucesso");
                 } else if (escolhaAdm == 3) {
-                    UtilMenu.menuDemitirOperador(scanner, operadorRespository);
-
+                    operadorRespository.deleteByCpf(UtilMenu.menuDemitirOperador(scanner, operadorRespository));
                     System.out.println("Operador demitido com sucesso");
-
                 } else
                     System.out.println("Opção inválida");
 
@@ -196,8 +199,19 @@ public class FourShoppApplication implements CommandLineRunner {
                     if (funcionario.getCargo() == Cargo.ADMINISTRADOR) {
                         throw new NoSuchElementException();
                     }
-                    System.out.println("Cadastrar produto");
-                    System.out.println("Cadastrar operadores");
+                    System.out.println("1- Cadastrar produto  \n2- Cadastrar operadores");
+                    int opcaoDoChefe = Validation.numberFormatValidation(scanner).intValue();
+                    if (opcaoDoChefe == 1) {
+                        //todo
+                        menuInicial(4);
+                    } else if (opcaoDoChefe == 2) {
+                        Operador operador = UtilMenu.menuCadastrarOperador(scanner, pessoaRepository);
+                        this.operadorService.create(operador);
+                        System.out.println("Operador cadastrado com sucesso");
+                    } else {
+                        System.out.println("Opção inválida!");
+                        menuInicial(4);
+                    }
                 } catch (NoSuchElementException e) {
                     System.out.println("Chefe de seção não encontrado");
                     menuInicial(4);

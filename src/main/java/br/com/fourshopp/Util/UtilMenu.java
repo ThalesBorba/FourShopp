@@ -195,7 +195,7 @@ public class UtilMenu {
 
     public static Operador menuCadastrarOperador(Scanner scanner, PessoaRepository pessoaRepository) throws ParseException {
 
-        System.out.println("Insxira seu nome: ");
+        System.out.println("Insira seu nome: ");
         scanner.nextLine();
         String nome = scanner.nextLine();
 
@@ -224,6 +224,7 @@ public class UtilMenu {
         String bairro = scanner.next();
 
         System.out.println("Insira seu numero: ");
+        scanner.nextLine();
         int numero = Validation.numberFormatValidation(scanner).intValue();
 
         System.out.println("Data de contratação: ");
