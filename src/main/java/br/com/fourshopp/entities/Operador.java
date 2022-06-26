@@ -10,6 +10,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Objects;
 
 @PrimaryKeyJoinColumn(name = "cd_operador")
 @Entity
@@ -48,5 +49,18 @@ public class Operador  extends Pessoa {
         this.cargo = cargo;
         this.salario = salario;
         this.cargaHoraria = cargaHoraria;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Operador operador = (Operador) o;
+        return Double.compare(operador.salario, salario) == 0 && Objects.equals(dataContratacao, operador.dataContratacao) && cargo == operador.cargo && Objects.equals(funcionario, operador.funcionario) && Objects.equals(cargaHoraria, operador.cargaHoraria) && setor == operador.setor;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dataContratacao, cargo, salario, funcionario, cargaHoraria, setor);
     }
 }

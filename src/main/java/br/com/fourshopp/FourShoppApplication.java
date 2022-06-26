@@ -161,7 +161,9 @@ public class FourShoppApplication implements CommandLineRunner {
                     this.operadorService.create(operador);
                     System.out.println("Operador cadastrado com sucesso");
                 } else if (escolhaAdm == 3) {
-                    operadorRespository.deleteByCpf(UtilMenu.menuDemitirOperador(scanner, operadorRespository));
+                    String cpfDoOperador = UtilMenu.menuDemitirOperador(scanner, operadorRespository);
+                    funcionarioService.removeOperative(operadorRespository.findByCpf(cpfDoOperador));
+                    operadorRespository.deleteByCpf(cpfDoOperador);
                     System.out.println("Operador demitido com sucesso");
                 } else
                     System.out.println("Opção inválida");

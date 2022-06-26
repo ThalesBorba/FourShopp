@@ -23,7 +23,8 @@ public class FuncionarioService {
     }
 
     public Funcionario findById(Long id){
-        return (Funcionario) funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
+        return (Funcionario) funcionarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto" +
+                " não encontrado"));
     }
 
     public List<Funcionario> listAll(){
@@ -38,6 +39,21 @@ public class FuncionarioService {
         Funcionario found = funcionarioRepository.findByCpf(cpf);
         found.getOperadores().add(operador);
         return funcionarioRepository.save(found);
+    }
+
+    public void removeOperative(Operador operador) {
+        List<Funcionario> funcionarios = funcionarioRepository.findAll();
+        for (Funcionario funcionario : funcionarios) {
+            if (funcionario.getSetor() != null) {
+                if (funcionario.getSetor().equals(operador.getSetor())) {
+                    funcionario.getOperadores().remove(operador);
+                    System.out.println(funcionario.getOperadores());
+                    funcionarioRepository.save(funcionario);
+                }
+            }
+        }
+
+
     }
 
     public Optional<Funcionario> loadByEmailAndPassword(String cpf, String password){
