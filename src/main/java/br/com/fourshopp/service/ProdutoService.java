@@ -5,6 +5,7 @@ import br.com.fourshopp.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
+    @Transactional
     public void remove(Long id){
         produtoRepository.deleteById(id);
     }

@@ -16,11 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -201,21 +200,31 @@ public class FourShoppApplication implements CommandLineRunner {
                     if (funcionario.getCargo() == Cargo.ADMINISTRADOR) {
                         throw new NoSuchElementException();
                     }
-                    System.out.println("1- Cadastrar produto  \n2- Cadastrar operadores");
+                    System.out.println("1 - Cadastrar produto  \n2 - Cadastrar operadores \n3 - Remover Produto");
                     int opcaoDoChefe = Validation.numberFormatValidation(scanner).intValue();
-                    if (opcaoDoChefe == 1) {
-                        Produto produto = UtilMenu.menuCadastrarProduto(scanner);
-                        this.produtoRepository.save(produto);
-                        System.out.println("Produto salvo");
-                    } else if (opcaoDoChefe == 2) {
-                        Operador operador = UtilMenu.menuCadastrarOperador(scanner, pessoaRepository);
-                        operador.setSetor(funcionario.getSetor());
-                        this.operadorService.create(operador);
-                        this.funcionarioService.update(operador, funcionario.getCpf());
-                        System.out.println("Operador cadastrado com sucesso");
-                    } else {
-                        System.out.println("Opção inválida!");
-                        menuInicial(4);
+                    switch (opcaoDoChefe) {
+                        case  1 -> {
+                            Produto produto = UtilMenu.menuCadastrarProduto(scanner);
+                            this.produtoRepository.save(produto);
+                            System.out.println("Produto salvo");
+                        }
+                        case 2 -> {
+                            Operador operador = UtilMenu.menuCadastrarOperador(scanner, pessoaRepository);
+                            operador.setSetor(funcionario.getSetor());
+                            this.operadorService.create(operador);
+                            this.funcionarioService.update(operador, funcionario.getCpf());
+                            System.out.println("Operador cadastrado com sucesso");
+                        }
+                        case 3 -> {
+                            System.out.println("Digite a id do Produto a remover: ");
+                            Long id = Validation.validateProductRemoval(scanner, produtoService);
+                            this.produtoService.remove(id);
+                            System.out.println("Produto removido com sucesso!");
+                        }
+                        default -> {
+                            System.out.println("Opção inválida!");
+                            menuInicial(4);
+                        }
                     }
                 } catch (NoSuchElementException e) {
                     System.out.println("Chefe de seção não encontrado");

@@ -261,7 +261,7 @@ public class UtilMenu {
     public static Produto menuCadastrarProduto(Scanner scanner) throws ParseException {
         System.out.println("Insira seu nome: ");
         scanner.nextLine();
-        String nome = scanner.nextLine();
+        String nome = scanner.next();
 
         System.out.println("Insira a quantidade: ");
         scanner.nextLine();
@@ -279,4 +279,5 @@ public class UtilMenu {
 
         return new Produto(nome, quantidade, preco, setor, dataVencimento);
     }
+
 }

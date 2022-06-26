@@ -1,13 +1,17 @@
 package br.com.fourshopp.Util;
 
+import br.com.fourshopp.entities.Produto;
 import br.com.fourshopp.entities.Setor;
 import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
+import br.com.fourshopp.repository.ProdutoRepository;
+import br.com.fourshopp.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -135,5 +139,21 @@ public class Validation {
 
     return setor;
     }
+
+    public static Long validateProductRemoval(Scanner scanner, ProdutoService produtoService) {
+        while (true) {
+            String inputToverify = scanner.next();
+            try {
+                Long id = Long.parseLong(inputToverify);
+                produtoService.findById(id);
+                return id;
+            } catch (NumberFormatException e) {
+                System.err.println("Digite um número!");
+            } catch (ResourceNotFoundException e) {
+                System.err.println("Produto não encontrado!");
+            }
+        }
+    }
+
 }
 
