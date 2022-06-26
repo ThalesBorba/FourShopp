@@ -36,7 +36,7 @@ public class Produto implements Serializable, Cloneable {
     private double preco;
 
     @Column(name = "ds_setor")
-    private int setor;
+    private Setor setor;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "dt_vencimento")
@@ -46,7 +46,7 @@ public class Produto implements Serializable, Cloneable {
         this.nome = nome;
         this.quantidade = quantidade;
         this.preco = preco;
-        this.setor = setor.getCd();
+        this.setor = setor;
         this.dataVencimento = dataVencimento;
     }
 

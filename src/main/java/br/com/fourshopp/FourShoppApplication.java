@@ -217,7 +217,7 @@ public class FourShoppApplication implements CommandLineRunner {
                         }
                         case 3 -> {
                             System.out.println("Digite a id do Produto a remover: ");
-                            Long id = Validation.validateProductRemoval(scanner, produtoService);
+                            Long id = Validation.validateProductRemoval(scanner, produtoService, funcionario);
                             this.produtoService.remove(id);
                             System.out.println("Produto removido com sucesso!");
                         }

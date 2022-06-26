@@ -1,15 +1,15 @@
 package br.com.fourshopp.Util;
 
+import br.com.fourshopp.entities.Funcionario;
 import br.com.fourshopp.entities.Produto;
 import br.com.fourshopp.entities.Setor;
 import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
-import br.com.fourshopp.repository.ProdutoRepository;
 import br.com.fourshopp.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import java.nio.file.AccessDeniedException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -140,17 +140,23 @@ public class Validation {
     return setor;
     }
 
-    public static Long validateProductRemoval(Scanner scanner, ProdutoService produtoService) {
+    public static Long validateProductRemoval(Scanner scanner, ProdutoService produtoService, Funcionario funcionario) {
         while (true) {
             String inputToverify = scanner.next();
             try {
                 Long id = Long.parseLong(inputToverify);
-                produtoService.findById(id);
+                Produto produto = produtoService.findById(id);
+                if(!funcionario.getSetor().equals(produto.getSetor())) {
+                    throw new IllegalAccessException();
+                }
                 return id;
             } catch (NumberFormatException e) {
                 System.err.println("Digite um número!");
             } catch (ResourceNotFoundException e) {
                 System.err.println("Produto não encontrado!");
+            } catch (IllegalAccessException e) {
+                //todo testar
+                System.out.println("Produto pertence a outro setor, permissão negada!");
             }
         }
     }
