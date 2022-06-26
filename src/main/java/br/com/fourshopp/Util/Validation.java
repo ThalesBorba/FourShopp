@@ -4,6 +4,10 @@ import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Validation {
@@ -88,5 +92,25 @@ public class Validation {
     public static Boolean assertCpfIsNew(String cpf, PessoaRepository pessoaRepository) {
         return pessoaRepository.findByCpf(cpf) == null;
     }
+
+    public static Date assertExpiringDateIsValid(Scanner scanner) throws ParseException {
+        Date data = null;
+        while (true) {
+            String dataDeVencimento = scanner.next();
+            if (ValidationEnum.DATE.getKey().matcher(dataDeVencimento).matches()) {
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                data = formato.parse(dataDeVencimento);
+                if (data.after(new Date())) {
+                    System.out.println("Data de validade expirada!");
+                } else {
+                    break;
+                }
+            } else {
+                System.out.println("Data deve seguir o formato: 01/01/2022");
+            }
+        }
+        return data;
+    }
+
     }
 
