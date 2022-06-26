@@ -190,11 +190,29 @@ public class FourShoppApplication implements CommandLineRunner {
             String password = scanner.next();
 
             if (escolhaCargo == 1){
-                this.funcionarioService.loadByEmailAndPassword(cpf,password);
-                System.out.println("Cadastrar produto");
-                System.out.println("Cadastrar operadores");
-            }else{
-                Optional<Operador> operador = this.operadorService.loadByEmailAndPassword(cpf, password);
+                try {
+                    Funcionario funcionario = this.funcionarioService.loadByEmailAndPassword(cpf,password).
+                            orElseThrow(NoSuchElementException::new);
+                    if (funcionario.getCargo() == Cargo.ADMINISTRADOR) {
+                        throw new NoSuchElementException();
+                    }
+                    System.out.println("Cadastrar produto");
+                    System.out.println("Cadastrar operadores");
+                } catch (NoSuchElementException e) {
+                    System.out.println("Chefe de seção não encontrado");
+                    menuInicial(4);
+                }
+            }else if (escolhaCargo == 2){
+                try {
+                    Operador operador = this.operadorService.loadByEmailAndPassword(cpf, password).
+                            orElseThrow(NoSuchElementException::new);
+                } catch (NoSuchElementException e) {
+                    System.out.println("Operador não encontrado");
+                    menuInicial(4);
+                }
+            } else {
+                System.out.println("Opção inválida!");
+                menuInicial(4);
             }
         }
     }
