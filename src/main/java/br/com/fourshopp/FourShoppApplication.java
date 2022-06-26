@@ -206,7 +206,7 @@ public class FourShoppApplication implements CommandLineRunner {
                 try {
                     Operador operador = this.operadorService.loadByEmailAndPassword(cpf, password).
                             orElseThrow(NoSuchElementException::new);
-                } catch (NoSuchElementException e) {
+                } catch (NoSuchElementException | ClassCastException e) {
                     System.out.println("Operador não encontrado");
                     menuInicial(4);
                 }
