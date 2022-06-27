@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static br.com.fourshopp.Util.UtilMenu.*;

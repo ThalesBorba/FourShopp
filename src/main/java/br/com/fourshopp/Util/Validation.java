@@ -146,7 +146,7 @@ public class Validation {
             try {
                 Long id = Long.parseLong(inputToverify);
                 Produto produto = produtoService.findById(id);
-                if(!funcionario.getSetor().equals(produto.getSetor())) {
+                if(funcionario.getSetor().getCd() != produto.getSetor()) {
                     throw new IllegalAccessException();
                 }
                 return id;
