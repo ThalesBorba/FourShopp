@@ -77,7 +77,14 @@ public class UtilMenu {
     public static int menuSetor(Scanner scanner) {
         System.out.println("Digite a opção desejada: " +
                 "\n1- MERCEARIA \n2- BAZAR \n3- ELETRÔNICOS");
-        int opcao = Validation.numberFormatValidation(scanner).intValue();
+        int opcao = 0;
+        while (true) {
+            opcao = Validation.numberFormatValidation(scanner).intValue();
+            if (opcao > 0 && opcao < 4) {
+                break;
+            }
+            System.err.println("Opção inválida!");
+        }
         return opcao;
     }
 
@@ -148,17 +155,16 @@ public class UtilMenu {
 
     private static Double verificaMercearia(List<Produto> produtos) {
         Double totalMercearia = 0.0;
-        Double desconto = 0.0;
+        Integer desconto = 0;
         for (Produto produto: produtos) {
             if (produto.getSetor() == 1) {
                 totalMercearia += produto.getPreco();
-                if (totalMercearia >= 500) {
-                    desconto += 50;
-                    totalMercearia = 0.0;
                 }
             }
+        if (totalMercearia >= 500) {
+        desconto = ((totalMercearia).intValue() / 500) * 50;
         }
-        return desconto;
+        return desconto.doubleValue();
 
     }
 
@@ -202,13 +208,16 @@ public class UtilMenu {
         System.out.println("Insira o salário CLT bruto: ");
         double salario = Validation.numberFormatValidation(scanner);
 
+        System.out.println("Escolha o setor: \n1 - MERCEARIA\n2 - BAZAR\n3 - ELETRONICOS");
+        Setor setor = Validation.convertDepartment(scanner);
+
 
 
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         Date data = formato.parse(hireDate);
 
         Endereco endereco = new Endereco(rua, cidade, bairro, numero);
-        return new Funcionario(nome, email, celular, password, cpf, endereco, data , Cargo.CHEFE_SECAO, Setor.MERCEARIA,
+        return new Funcionario(nome, email, celular, password, cpf, endereco, data , Cargo.CHEFE_SECAO, setor,
                 salario, new ArrayList<>(), new ArrayList<>());
 
 
@@ -277,8 +286,8 @@ public class UtilMenu {
 
     }
 
-    public static Produto menuCadastrarProduto(Scanner scanner) throws ParseException {
-        System.out.println("Insira seu nome: ");
+    public static Produto menuCadastrarProduto(Scanner scanner, Funcionario funcionario) throws ParseException {
+        System.out.println("Insira o nome do produto: ");
         scanner.nextLine();
         String nome = scanner.next();
 
@@ -289,14 +298,10 @@ public class UtilMenu {
         System.out.println("Insira o preco: ");
         Double preco = Validation.numberFormatValidation(scanner);
 
-        //todo setor
-        System.out.println("Escolha o setor: \n1 - MERCEARIA\n2 - BAZAR\n3 - ELETRONICOS");
-        Setor setor = Validation.convertDepartment(scanner);
-
         System.out.println("Insira a data de vencimento: ");
         Date dataVencimento = Validation.assertExpiringDateIsValid(scanner);
 
-        return new Produto(nome, quantidade, preco, setor, dataVencimento);
+        return new Produto(nome, quantidade, preco, funcionario.getSetor(), dataVencimento);
     }
 
 }

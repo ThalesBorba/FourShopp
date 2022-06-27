@@ -104,7 +104,7 @@ public class FourShoppApplication implements CommandLineRunner {
                     System.out.println(produto.getId()+"- "+produto.getNome()+" Preço: "+produto.getPreco()+" Estoque - "+produto.getQuantidade());
                 });
 
-                System.out.println("Informe a id do produto desejado: ");
+                System.out.println("Informe o número do produto desejado: ");
                 Long produto = Validation.validateProductToSell(scanner, produtoService);
 
                 Produto foundById = produtoService.findById(produto);
@@ -206,7 +206,7 @@ public class FourShoppApplication implements CommandLineRunner {
                     int opcaoDoChefe = Validation.numberFormatValidation(scanner).intValue();
                     switch (opcaoDoChefe) {
                         case  1 -> {
-                            Produto produto = UtilMenu.menuCadastrarProduto(scanner);
+                            Produto produto = UtilMenu.menuCadastrarProduto(scanner, funcionario);
                             this.produtoRepository.save(produto);
                             System.out.println("Produto salvo");
                         }
