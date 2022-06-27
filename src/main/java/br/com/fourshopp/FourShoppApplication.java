@@ -19,7 +19,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -105,14 +104,16 @@ public class FourShoppApplication implements CommandLineRunner {
                     System.out.println(produto.getId()+"- "+produto.getNome()+" Preço: "+produto.getPreco()+" Estoque - "+produto.getQuantidade());
                 });
 
-                System.out.println("Informe o número do produto desejado: ");
-                Long produto = Validation.longNumberFormatValidation(scanner);
+                System.out.println("Informe a id do produto desejado: ");
+                Long produto = Validation.validateProductToSell(scanner, produtoService);
+
+                Produto foundById = produtoService.findById(produto);
 
                 System.out.println("Escolha a quantidade");
-                int quantidade = Validation.numberFormatValidation(scanner).intValue();
+                int quantidade = Validation.validateQuantityToSell(scanner, foundById);
 
                 // Atualiza estoque
-                Produto foundById = produtoService.findById(produto);
+
                 produtoService.diminuirEstoque(quantidade, foundById);
 
                 Produto clone = foundById.clone();

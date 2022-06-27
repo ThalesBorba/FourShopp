@@ -83,6 +83,8 @@ public class UtilMenu {
 
     public static void gerarCupomFiscal(Cliente cliente) throws IOException {
         List<Produto> produtos = cliente.getProdutoList();
+        Double desconto = verificaMercearia(produtos);
+
         Document document = new Document(PageSize.A4);
         File file = new File("CupomFiscal_" + new Random().nextInt() + ".pdf");
         String absolutePath = file.getAbsolutePath();
@@ -132,7 +134,8 @@ public class UtilMenu {
             valorTotalCompra =  valorTotalCompra + produto.getPreco();
         });
 
-        Paragraph paragraph = new Paragraph("\n\nTOTAL: R$" + df.format(valorTotalCompra), total);
+        //todo test
+        Paragraph paragraph = new Paragraph("\n\nTOTAL: R$" + df.format(valorTotalCompra - desconto), total);
         paragraph.setAlignment(Paragraph.ALIGN_RIGHT);
 
 
@@ -141,6 +144,22 @@ public class UtilMenu {
 
 
         document.close();
+    }
+
+    private static Double verificaMercearia(List<Produto> produtos) {
+        Double totalMercearia = 0.0;
+        Double desconto = 0.0;
+        for (Produto produto: produtos) {
+            if (produto.getSetor() == 1) {
+                totalMercearia += produto.getPreco();
+                if (totalMercearia >= 500) {
+                    desconto += 50;
+                    totalMercearia = 0.0;
+                }
+            }
+        }
+        return desconto;
+
     }
 
     public static Funcionario cadastrarFuncionario(Scanner scanner, PessoaRepository pessoaRepository) throws ParseException {

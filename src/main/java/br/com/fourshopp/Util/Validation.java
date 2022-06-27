@@ -5,12 +5,10 @@ import br.com.fourshopp.entities.Produto;
 import br.com.fourshopp.entities.Setor;
 import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
-import br.com.fourshopp.repository.ProdutoRepository;
 import br.com.fourshopp.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
-import java.nio.file.AccessDeniedException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -201,5 +199,37 @@ public class Validation {
                 }
             }
         }
+
+    public static Long validateProductToSell(Scanner scanner, ProdutoService produtoService) {
+        while (true) {
+            String inputToverify = scanner.next();
+            try {
+                Long id = Long.parseLong(inputToverify);
+                produtoService.findById(id);
+                return id;
+            } catch (NumberFormatException e) {
+                System.err.println("Digite um número!");
+            } catch (ResourceNotFoundException e) {
+                System.err.println("Produto não encontrado!");
+            }
+        }
+    }
+
+    public static int validateQuantityToSell(Scanner scanner, Produto produto) {
+        Integer quantidade;
+        while (true) {
+            System.out.println("Quantos deseja comprar? ");
+            try {
+                quantidade = numberFormatValidation(scanner).intValue();
+                if (quantidade > produto.getQuantidade()) {
+                    throw new ArithmeticException();
+                }
+                break;
+            } catch (ArithmeticException e) {
+                System.err.println("Estoque insuficiente!");
+            }
+        }
+        return quantidade;
+    }
 }
 

@@ -19,7 +19,7 @@ public class ProdutoService {
         return produtoRepository.save(operador);
     }
 
-    public Produto findById(Long id){
+    public Produto findById(Long id) throws ResourceNotFoundException {
         return produtoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
     }
 
