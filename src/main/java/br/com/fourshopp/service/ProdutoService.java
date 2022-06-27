@@ -45,9 +45,21 @@ public class ProdutoService {
         return produtoRepository.findBySetor(setor);
     }
 
-    public void diminuirEstoque(int quantidade, Produto produto){
-        produto.setQuantidade(produto.getQuantidade() - quantidade);
-        //todo se quantidade for menor que zero quebraa
-        produtoRepository.save(produto);
+    public void alteraPreco(double preco, Produto produto) throws IllegalArgumentException {
+        if (preco <= 0) {
+            throw new IllegalArgumentException();
+        } else {
+            produto.setPreco(preco);
+            produtoRepository.save(produto);
+        }
+    }
+
+    public void diminuirEstoque(int quantidade, Produto produto) throws ArithmeticException {
+        if ((produto.getQuantidade() - quantidade) < 0) {
+            throw new ArithmeticException();
+        } else {
+            produto.setQuantidade(produto.getQuantidade() - quantidade);
+            produtoRepository.save(produto);
+        }
     }
 }

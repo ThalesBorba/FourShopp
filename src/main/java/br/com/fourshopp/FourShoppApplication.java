@@ -19,10 +19,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static br.com.fourshopp.Util.UtilMenu.*;
@@ -63,16 +61,16 @@ public class FourShoppApplication implements CommandLineRunner {
     @Override
     public void run(String[] args) throws Exception {
 
-/*
 
+/*
         Funcionario administrador = new Funcionario("Thales Borba", "thales@fourshopp.com", "2199887766",
                 "Abc123**", "111.111.111-33", new Endereco("a", "b", "c", 1),
                 new SimpleDateFormat("dd/MM/yyyy").parse("22/06/2022"), Cargo.ADMINISTRADOR, null,
                 50000.00, new ArrayList<>(), new ArrayList<>());
 
         pessoaRepository.save(administrador);
+*/
 
-        */
 
         System.out.println("====== BEM-VINDO AO FOURSHOPP ======");
         System.out.println("1- Sou cliente \n2- Área do ADM \n3- Seja um Cliente \n4- Login funcionário \n5- Encerrar ");
@@ -199,10 +197,11 @@ public class FourShoppApplication implements CommandLineRunner {
                 try {
                     Funcionario funcionario = this.funcionarioService.loadByEmailAndPassword(cpf,password).
                             orElseThrow(NoSuchElementException::new);
-                    if (funcionario.getCargo() == Cargo.ADMINISTRADOR) {
+                    if (funcionario.getCargo() == Cargo.ADMINISTRADOR || funcionario.getCargo() == Cargo.GERENTE) {
                         throw new NoSuchElementException();
                     }
-                    System.out.println("1 - Cadastrar produto  \n2 - Cadastrar operadores \n3 - Remover Produto");
+                    System.out.println("1 - Cadastrar produto  \n2 - Cadastrar operadores \n3 - Remover Produto " +
+                            "\n4 - Alterar produto");
                     int opcaoDoChefe = Validation.numberFormatValidation(scanner).intValue();
                     switch (opcaoDoChefe) {
                         case  1 -> {
@@ -218,10 +217,13 @@ public class FourShoppApplication implements CommandLineRunner {
                             System.out.println("Operador cadastrado com sucesso");
                         }
                         case 3 -> {
-                            System.out.println("Digite a id do Produto a remover: ");
+                            System.out.println("Digite a id do produto a remover: ");
                             Long id = Validation.validateProductRemoval(scanner, produtoService, funcionario);
                             this.produtoService.remove(id);
                             System.out.println("Produto removido com sucesso!");
+                        }
+                        case 4 -> {
+                            Validation.validateProductUpdate(scanner, funcionario, produtoService);
                         }
                         default -> {
                             System.out.println("Opção inválida!");

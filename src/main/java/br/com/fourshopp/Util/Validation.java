@@ -5,6 +5,7 @@ import br.com.fourshopp.entities.Produto;
 import br.com.fourshopp.entities.Setor;
 import br.com.fourshopp.repository.OperadorRespository;
 import br.com.fourshopp.repository.PessoaRepository;
+import br.com.fourshopp.repository.ProdutoRepository;
 import br.com.fourshopp.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -161,5 +162,44 @@ public class Validation {
         }
     }
 
+    public static void validateProductUpdate(Scanner scanner, Funcionario funcionario, ProdutoService produtoService) {
+        Boolean isInvalid = true;
+        while (isInvalid) {
+            System.out.println("Digite a id do produto a ser alterado: ");
+            try {
+                Long id = longNumberFormatValidation(scanner);
+                Produto produto = produtoService.findById(id);
+                if (funcionario.getSetor().getCd() != produto.getSetor()) {
+                    throw new IllegalAccessException();}
+                    System.out.println("Digite 1 para diminuir estoque, 2 para alterar preço: ");
+                    String opcao = scanner.next();
+                    switch (opcao) {
+                        case "1" -> {
+                            System.out.println("Quanto deseja remover? ");
+                            Integer quantidade = numberFormatValidation(scanner).intValue();
+                            produtoService.diminuirEstoque(quantidade, produto);
+                            System.out.println("Removido com sucesso!");
+                            isInvalid = false;
+                        }
+                        case "2" -> {
+                            System.out.println("Qual é o novo preço? ");
+                            Double preco = numberFormatValidation(scanner);
+                            produtoService.alteraPreco(preco, produto);
+                            System.out.println("Alterado com sucesso!");
+                            isInvalid = false;
+                        }
+                        default -> System.err.println("Opção inválida!");
+                    }
+                } catch(ResourceNotFoundException e){
+                    System.err.println("Produto não encontrado!");
+                } catch(ArithmeticException e){
+                    System.err.println("Estoque insuficiente para realizar a operação!");
+                } catch(IllegalArgumentException e){
+                    System.err.println("Preço não pode ser igual ou menor que 0!");
+                } catch(IllegalAccessException e){
+                    System.out.println("Produto pertence a outro setor, permissão negada!");
+                }
+            }
+        }
 }
 
