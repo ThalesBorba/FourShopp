@@ -227,6 +227,7 @@ public class Validation {
                 break;
             } catch (ArithmeticException e) {
                 System.err.println("Estoque insuficiente!");
+                scanner.nextLine();
             }
         }
         return quantidade;

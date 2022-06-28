@@ -88,7 +88,7 @@ public class FourShoppApplication implements CommandLineRunner {
                     this.cliente = clienteService.loadByEmailAndPassword(cpf, password).orElseThrow(() -> new
                             ObjectNotFoundException(1L,"Cliente"));
                     break;
-                } catch (ObjectNotFoundException e) {
+                } catch (ObjectNotFoundException | ClassCastException e) {
                     System.err.println("Usuario não encontrado !");
                 }
             }
@@ -199,7 +199,7 @@ public class FourShoppApplication implements CommandLineRunner {
                     Funcionario funcionario = this.funcionarioService.loadByEmailAndPassword(cpf,password).
                             orElseThrow(NoSuchElementException::new);
                     if (funcionario.getCargo() == Cargo.ADMINISTRADOR || funcionario.getCargo() == Cargo.GERENTE) {
-                        throw new NoSuchElementException();
+                        throw new IllegalAccessException();
                     }
                     System.out.println("1 - Cadastrar produto  \n2 - Cadastrar operadores \n3 - Remover Produto " +
                             "\n4 - Alterar produto");
@@ -233,6 +233,9 @@ public class FourShoppApplication implements CommandLineRunner {
                     }
                 } catch (NoSuchElementException e) {
                     System.out.println("Chefe de seção não encontrado");
+                    menuInicial(4);
+                } catch (IllegalAccessException | ClassCastException e) {
+                    System.out.println("Somente chefe de seção pode acessar essa área!");
                     menuInicial(4);
                 }
             }else if (escolhaCargo == 2){
