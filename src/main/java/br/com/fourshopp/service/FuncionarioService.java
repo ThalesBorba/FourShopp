@@ -10,7 +10,11 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @Service
 public class FuncionarioService {
@@ -42,19 +46,14 @@ public class FuncionarioService {
     }
 
     public void removeOperative(Operador operador) {
-        List<Funcionario> funcionarios = funcionarioRepository.findAll();
-        for (Funcionario funcionario : funcionarios) {
-            if (funcionario.getSetor() != null) {
-                if (funcionario.getSetor().equals(operador.getSetor())) {
-                    funcionario.getOperadores().remove(operador);
-                    System.out.println(funcionario.getOperadores());
-                    funcionarioRepository.save(funcionario);
-                }
-            }
-        }
-
-
+        Predicate<Funcionario> eOChefeDesteOperador = cadaFuncionario -> (cadaFuncionario.getSetor() != null) &&
+                cadaFuncionario.getSetor().equals(operador.getSetor());
+        Funcionario funcionario = funcionarioRepository.findAll().parallelStream().filter(eOChefeDesteOperador)
+                .map(Funcionario.class::cast).findFirst().orElseThrow(NoSuchElementException::new);
+        funcionario.getOperadores().remove(operador);
+        funcionarioRepository.save(funcionario);
     }
+
 
     public Optional<Funcionario> loadByEmailAndPassword(String cpf, String password){
         return funcionarioRepository.findByCpfAndPassword(cpf,password);
